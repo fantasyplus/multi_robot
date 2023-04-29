@@ -15,7 +15,10 @@
 
 double intensities[27];
 double mul = 1;
+
 std::string flag = "line";
+geometry_msgs::Twist m_vel;
+;
 
 ros::Publisher slave_vel;
 
@@ -26,6 +29,7 @@ void rotate(double angular_speed, double relative_angle, bool clockwise);
 // Laser call back function decleration
 void laserCallBack(const sensor_msgs::LaserScan::ConstPtr &laser_msg);
 void flagCallBack(const std_msgs::String::ConstPtr &msg);
+void velCallBack(const geometry_msgs::Twist::ConstPtr &msg);
 
 int main(int argc, char **argv)
 {
@@ -34,8 +38,10 @@ int main(int argc, char **argv)
     ros::NodeHandle node;
 
     slave_vel = node.advertise<geometry_msgs::Twist>("/ares3/cmd_vel", 10);
+
     ros::Subscriber laser = node.subscribe("/ares3/scan", 1, laserCallBack);
     ros::Subscriber sub_flag = node.subscribe("/flag", 1, flagCallBack);
+    ros::Subscriber sub_vel = node.subscribe("cmd_vel", 1, velCallBack);
 
     tf::TransformListener listener;
 
@@ -67,29 +73,33 @@ int main(int argc, char **argv)
             ros::Duration(1.0).sleep();
             continue;
         }
-        // avoid();  // function call to avoid obstacles while following the Master
+        avoid();  // function call to avoid obstacles while following the Master
 
         // Proportional controller to follow the Master (Go to master behaviour)
 
         float x = transformSM.getOrigin().x();
         float y = transformSM.getOrigin().y();
-        int dx = -1, dy = -1;
         float theta = tf::getYaw(transformSM.getRotation());
         if (flag == std::string("line"))
         {
             // ROS_INFO("robot3 is in line");
+            float dx = -1, dy = 0;
+            x += dx * std::cos(theta) - dx * std::sin(theta);
         }
         else if (flag == std::string("triangle"))
         {
+            float dx = -0.5, dy = -0.5;
             x += dx * std::cos(theta) - dx * std::sin(theta);
             y += dy * std::sin(theta) + dy * std::cos(theta);
             // ROS_INFO("robot3 is in triangle");
         }
 
         geometry_msgs::Twist vel_msg;
-
-        vel_msg.angular.z = 4.0 * atan2(y, x);
-        vel_msg.linear.x = 0.5 * sqrt(pow(x, 2) + pow(y, 2));
+        if (m_vel.linear.x > 1e-3)
+        {
+            vel_msg.angular.z = 4.0 * atan2(y, x);
+            vel_msg.linear.x = 3 * sqrt(pow(x, 2) + pow(y, 2));
+        }
 
         slave_vel.publish(vel_msg);
         ros::spinOnce();
@@ -109,13 +119,16 @@ void flagCallBack(const std_msgs::String::ConstPtr &msg)
  */
 void laserCallBack(const sensor_msgs::LaserScan::ConstPtr &laser_msg)
 {
-    // ROS_INFO("I am in: [%s]", "laser call back");
-
     for (int i = 0; i < 27; i++)  // I need not loop to copy, I not familiar with std::vectors
     {
         intensities[i] = laser_msg->intensities[i];
         mul = mul * intensities[i];  // check point if robot is blocked 270 degrees
     }
+}
+
+void velCallBack(const geometry_msgs::Twist::ConstPtr &msg)
+{
+    m_vel = *msg;
 }
 
 /*

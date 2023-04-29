@@ -6,7 +6,7 @@
     <node pkg="stage_first" type="tf_broadcaster"
           args="/ares3" name="ares3_tf_broadcaster" />
    
-    <node pkg="stage_first" type="master" name="master" />
-    <node pkg="stage_first" type="slave_tf_listener2" name="slave2" output="screen"/>
-    <node pkg="stage_first" type="slave_tf_listener3" name="slave3" output="screen"/>
+    <node pkg="stage_first" type="master" name="master" output="log" />
+    <node pkg="stage_first" type="slave_tf_listener2" name="slave2" output="log"/>
+    <node pkg="stage_first" type="slave_tf_listener3" name="slave3" output="log"/>
   </launch>

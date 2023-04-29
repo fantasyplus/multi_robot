@@ -19,7 +19,7 @@
         <arg name="headless" value="$(arg headless)"/>
     </include>
 
-	<node name="ares_teleop" pkg="ares_teleop" type="ares_teleop.py" output="screen" />
+	<!-- <node name="ares_teleop" pkg="ares_teleop" type="ares_teleop.py" output="screen" /> -->
 
     <!-- 加载机器人模型描述参数 -->
 
@@ -87,5 +87,14 @@
           	args="-urdf -model ares3 -param robot_description -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos)"/> 
 	</group>
 	
-
+    <node pkg="stage_first" type="tf_broadcaster"
+          args="/ares2" name="ares2_tf_broadcaster" />
+    <node pkg="stage_first" type="tf_broadcaster"
+          args="/ares1" name="ares1_tf_broadcaster" />
+    <node pkg="stage_first" type="tf_broadcaster"
+          args="/ares3" name="ares3_tf_broadcaster" />
+   
+    <node pkg="stage_first" type="master" name="master" output="log" />
+    <node pkg="stage_first" type="slave_tf_listener2" name="slave2" output="log"/>
+    <node pkg="stage_first" type="slave_tf_listener3" name="slave3" output="log"/>
 </launch>

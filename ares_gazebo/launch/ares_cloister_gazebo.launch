@@ -55,7 +55,7 @@
 
     	<!-- 在gazebo中加载机器人模型-->
     	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-          	args="-urdf -model ares2 -param robot_description -x 0 -y 1"/> 
+          	args="-urdf -model ares2 -param robot_description -x -1 -y 0"/> 
 	</group>
 
 	<!-- begin robot3 -->
@@ -72,7 +72,7 @@
 
     	<!-- 在gazebo中加载机器人模型-->
     	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-          	args="-urdf -model ares3 -param robot_description -x 0 -y -1"/> 
+          	args="-urdf -model ares3 -param robot_description -x -2 -y -0"/> 
 	</group>
 	
 </launch>
