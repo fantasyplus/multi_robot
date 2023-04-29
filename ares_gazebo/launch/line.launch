@@ -1,4 +1,5 @@
 <launch>
+	<include file="$(find stage_first)/OnYourMarkGetSetGo.launch" />
 
     <!-- 设置launch文件的参数 -->
     <arg name="world_name" value="$(find ares_gazebo)/worlds/empty.world"/>
@@ -18,13 +19,14 @@
         <arg name="headless" value="$(arg headless)"/>
     </include>
 
-	
+	<node name="ares_teleop" pkg="ares_teleop" type="ares_teleop.py" output="screen" />
+
     <!-- 加载机器人模型描述参数 -->
 
-	<!-- begin robot1 -->
+	<!-- begin robot1 master-->
 	<group ns="ares1">
 		<!--模型车的起点放置位置-->
-		<arg name="x_pos" default="1"/>
+		<arg name="x_pos" default="3"/>
 		<arg name="y_pos" default="0"/>
 		<arg name="z_pos" default="0"/>
     	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ares_description)/urdf/ares_laser.xacro' bodyframe:=ares1 ns:=ares1" /> 
@@ -33,14 +35,12 @@
     	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node> 
 
     	<!-- 运行robot_state_publisher节点，发布tf  -->
-   		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"  output="screen" >
+   		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
         <param name="publish_frequency" type="double" value="50.0" />
 		</node>
 	
-	<!-- node name="ares_teleop"       pkg="ares_teleop" type="ares_teleop.py"       output="screen" /-->
-
     	<!-- 在gazebo中加载机器人模型-->
-    	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+    	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false"
           	args="-urdf -model ares1 -param robot_description -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos)"/> 
    		
 	</group>
@@ -57,19 +57,19 @@
     	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node> 
 
     	<!-- 运行robot_state_publisher节点，发布tf  -->
-   		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"  output="screen" >
+   		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
         <param name="publish_frequency" type="double" value="50.0" />
 		</node>
 
     	<!-- 在gazebo中加载机器人模型-->
-    	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+    	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false"
           	args="-urdf -model ares2 -param robot_description -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos)"/> 
 	</group>
 
 	<!-- begin robot3 -->
 	<group ns="ares3">
 		<!--模型车的起点放置位置-->
-		<arg name="x_pos" default="3"/>
+		<arg name="x_pos" default="1"/>
 		<arg name="y_pos" default="0"/>
 		<arg name="z_pos" default="0"/>
     	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ares_description)/urdf/ares_laser.xacro' bodyframe:=ares3 ns:=ares3" /> 
@@ -78,12 +78,12 @@
     	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node> 
 
     	<!-- 运行robot_state_publisher节点，发布tf  -->
-   		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"  output="screen" >
+   		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
         <param name="publish_frequency" type="double" value="50.0" />
 		</node>
 
     	<!-- 在gazebo中加载机器人模型-->
-    	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+    	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false"
           	args="-urdf -model ares3 -param robot_description -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos)"/> 
 	</group>
 	

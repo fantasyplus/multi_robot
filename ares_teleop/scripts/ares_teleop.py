@@ -3,6 +3,7 @@
 
 import rospy
 from geometry_msgs.msg import Twist
+from std_msgs.msg import String
 import sys, select, termios, tty
 
 msg = """
@@ -14,7 +15,7 @@ Moving around:
    m    ,    .
 
 p : change move style
-a : open/close laser
+a : change robot queue style
 s : start to move
 d/f : increase/decrease PTZ pitch angle
 g/h : increase/decrease PTZ yaw angle
@@ -47,6 +48,8 @@ speedBindings={
         'c':(1,.9),
           }
 
+index = 0
+
 def getKey():
     tty.setraw(sys.stdin.fileno())
     rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
@@ -73,6 +76,7 @@ if __name__=="__main__":
     vel_pub2 = rospy.Publisher('ares2/cmd_vel',  Twist,   queue_size=1)
     vel_pub3 = rospy.Publisher('ares3/cmd_vel',  Twist,   queue_size=1)
     vel_pub4 = rospy.Publisher('ares4/cmd_vel',  Twist,   queue_size=1)
+    flag_pub = rospy.Publisher('flag',  String,   queue_size=1)
 
     x = 0
     y = 0
@@ -86,7 +90,6 @@ if __name__=="__main__":
     control_speed_y = 0
     control_turn = 0
     move_style = 0
-    laser_open = 0
     gun_fire = 0
     gun_pitch_angle = 185
     gun_yaw_angle=185
@@ -127,16 +130,16 @@ if __name__=="__main__":
                 else:
                     move_style = 1
                 print "Change move style"
-            # 瞄准器
+            # change queue
             elif key == 'a':
-                mask = 2
-                if laser_open:
-                    laser_open = 0
-                    print "Close laser"
-                else:
-                    laser_open = 1
-                    print "Open laser"
-            # move
+                list = ["line", "triangle"]
+                output = list[index]
+                index += 1
+                if index == len(list):
+                    index = 0
+                print "Change queue to %s" % output
+                flag_pub.publish(output)
+             # move
             elif key == 's':
                 x = 1
                 y = 1
