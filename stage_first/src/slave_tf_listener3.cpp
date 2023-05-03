@@ -83,7 +83,7 @@ int main(int argc, char **argv)
         if (flag == std::string("line"))
         {
             // ROS_INFO("robot3 is in line");
-            float dx = -1, dy = 0;
+            float dx = -1.5, dy = 0;
             x += dx * std::cos(theta) - dx * std::sin(theta);
         }
         else if (flag == std::string("triangle"))
@@ -98,7 +98,8 @@ int main(int argc, char **argv)
         if (m_vel.linear.x > 1e-3)
         {
             vel_msg.angular.z = 4.0 * atan2(y, x);
-            vel_msg.linear.x = 3 * sqrt(pow(x, 2) + pow(y, 2));
+            // vel_msg.linear.x = 3 * sqrt(pow(x, 2) + pow(y, 2));
+            vel_msg.linear.x = (pow(x, 2) + pow(y, 2));
         }
 
         slave_vel.publish(vel_msg);

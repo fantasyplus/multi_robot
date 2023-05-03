@@ -153,9 +153,6 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-add_executable(move_test src/move_test.cpp)
-target_link_libraries(move_test ${catkin_LIBRARIES})
-
 #############
 ## Install ##
 #############

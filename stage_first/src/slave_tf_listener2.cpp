@@ -98,7 +98,8 @@ int main(int argc, char **argv)
         if (m_vel.linear.x > 1e-3)
         {
             vel_msg.angular.z = 4.0 * atan2(y, x);
-            vel_msg.linear.x = 3 * sqrt(pow(x, 2) + pow(y, 2));
+            // vel_msg.linear.x = 3 * sqrt(pow(x, 2) + pow(y, 2));
+            vel_msg.linear.x = (pow(x, 2) + pow(y, 2));
         }
 
         slave_vel.publish(vel_msg);

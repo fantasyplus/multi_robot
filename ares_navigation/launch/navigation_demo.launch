@@ -9,8 +9,10 @@
 	<remap from="/scan" to="ares1/scan"/>
 	<remap from="ares1/odom" to="odom"/>
 
+    <!-- start multi robot -->
 	<include file="$(find stage_first)/OnYourMarkGetSetGo.launch" />
 
+    <!-- start simulation -->
     <include file="$(find ares_gazebo)/launch/ares_cloister_gazebo.launch" />
 
     <!-- 运行move_base节点 -->

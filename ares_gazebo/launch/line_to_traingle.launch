@@ -1,6 +1,4 @@
 <launch>
-	<include file="$(find stage_first)/OnYourMarkGetSetGo.launch" />
-
     <!-- 设置launch文件的参数 -->
     <arg name="world_name" value="$(find ares_gazebo)/worlds/empty.world"/>
     <arg name="paused" default="false"/>
@@ -19,14 +17,14 @@
         <arg name="headless" value="$(arg headless)"/>
     </include>
 
-	<!-- <node name="ares_teleop" pkg="ares_teleop" type="ares_teleop.py" output="screen" /> -->
+	<node name="ares_teleop" pkg="ares_teleop" type="ares_teleop.py" output="screen" />
 
     <!-- 加载机器人模型描述参数 -->
 
 	<!-- begin robot1 master-->
 	<group ns="ares1">
 		<!--模型车的起点放置位置-->
-		<arg name="x_pos" default="3"/>
+		<arg name="x_pos" default="4"/>
 		<arg name="y_pos" default="0"/>
 		<arg name="z_pos" default="0"/>
     	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ares_description)/urdf/ares_laser.xacro' bodyframe:=ares1 ns:=ares1" /> 
@@ -48,7 +46,7 @@
 	<!-- begin robot2 -->
 	<group ns="ares2">
 		<!--模型车的起点放置位置-->
-		<arg name="x_pos" default="2"/>
+		<arg name="x_pos" default="3"/>
 		<arg name="y_pos" default="0"/>
 		<arg name="z_pos" default="0"/>
     	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ares_description)/urdf/ares_laser.xacro' bodyframe:=ares2 ns:=ares2" /> 
@@ -94,7 +92,7 @@
     <node pkg="stage_first" type="tf_broadcaster"
           args="/ares3" name="ares3_tf_broadcaster" />
    
-    <node pkg="stage_first" type="master" name="master" output="log" />
-    <node pkg="stage_first" type="slave_tf_listener2" name="slave2" output="log"/>
-    <node pkg="stage_first" type="slave_tf_listener3" name="slave3" output="log"/>
+    <node pkg="stage_first" type="master" name="master"/>
+    <node pkg="stage_first" type="slave_tf_listener2" name="slave2"/>
+    <node pkg="stage_first" type="slave_tf_listener3" name="slave3"/>
 </launch>

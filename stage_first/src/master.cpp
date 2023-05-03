@@ -17,7 +17,7 @@ geometry_msgs::Twist m_vel;
 void velCallBack(const geometry_msgs::Twist::ConstPtr &msg)
 {
     m_vel = *msg;
-    ROS_INFO("I heard: [%f]", m_vel.linear.x);
+    // ROS_INFO("I heard: [%f]", m_vel.linear.x);
 }
 
 int main(int argc, char **argv)

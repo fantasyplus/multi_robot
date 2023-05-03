@@ -18,9 +18,9 @@
         <arg name="headless" value="$(arg headless)"/>
     </include>
 
-	
-    <!-- 加载机器人模型描述参数 -->
+	<node name="rectangular"  pkg="ares_teleop" type="rectangular.py"  output="screen" />
 
+    <!-- 加载机器人模型描述参数 -->
 	<!-- begin robot1 -->
 	<group ns="ares1">
 		<!--模型车的起点放置位置-->
@@ -37,8 +37,6 @@
         <param name="publish_frequency" type="double" value="50.0" />
 		</node>
 	
-	<!-- node name="ares_teleop"       pkg="ares_teleop" type="ares_teleop.py"       output="screen" /-->
-
     	<!-- 在gazebo中加载机器人模型-->
     	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
           	args="-urdf -model ares1 -param robot_description -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos)"/> 
